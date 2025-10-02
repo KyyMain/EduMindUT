@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UT Metodologi Penelitian Chat Center</title>
+    <title>EduMind UT</title>
     <meta
       name="description"
       content="Chatbot resmi Universitas Terbuka untuk bimbingan Mata Kuliah Metodologi Penelitian."
@@ -288,7 +288,7 @@
           </div>
           <div>
             <p class="text-xs uppercase tracking-[0.45em] text-primary-200">Universitas Terbuka</p>
-            <p class="text-lg font-semibold text-white">Pusat Layanan Digital</p>
+            <p class="text-lg font-semibold text-white">EduMind</p>
           </div>
         </div>
         <div class="hidden items-center gap-6 text-sm text-slate-300 md:flex">
@@ -310,7 +310,7 @@
             Metodologi Penelitian • Universitas Terbuka
           </span>
           <h1 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Chat Center UT untuk bimbingan Mata Kuliah Metodologi Penelitian.
+            ChatBot UT untuk bimbingan Mata Kuliah Metodologi Penelitian.
           </h1>
           <p class="max-w-xl text-lg text-slate-300">
             Dapatkan panduan penyusunan proposal, referensi metodologi, serta pengecekan progres tugas
@@ -394,59 +394,7 @@
       </header>
 
       <main id="chatbot" class="relative mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 pb-20">
-        <section id="layanan" class="grid gap-6 lg:grid-cols-[320px_1fr]">
-          <aside class="glass-panel gradient-border h-max rounded-3xl p-6 text-sm">
-            <h2 class="text-lg font-semibold text-white">Pendampingan Metodologi</h2>
-            <p class="mt-2 text-slate-400">
-              Pilih aksi cepat untuk mendapatkan panduan instan seputar tugas dan asesmen Metodologi Penelitian.
-            </p>
-            <div class="mt-5 space-y-3 text-sm">
-              <button
-                class="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left font-medium text-slate-200 transition hover:bg-white/10"
-                data-quick-action="rangkuman-materi"
-              >
-                Rangkuman Materi Minggu Ini
-                <span class="rounded-full bg-primary-500/20 px-2 py-0.5 text-xs text-primary-200">
-                  5 menit
-                </span>
-              </button>
-              <button
-                class="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left font-medium text-slate-200 transition hover:bg-white/10"
-                data-quick-action="cek-topik-penelitian"
-              >
-                Validasi Topik Penelitian
-                <span class="rounded-full bg-primary-500/20 px-2 py-0.5 text-xs text-primary-200">
-                  Relevansi
-                </span>
-              </button>
-              <button
-                class="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left font-medium text-slate-200 transition hover:bg-white/10"
-                data-quick-action="contoh-instrumen"
-              >
-                Contoh Instrumen Pengumpulan Data
-                <span class="rounded-full bg-gold-400/20 px-2 py-0.5 text-xs text-gold-200">
-                  Template
-                </span>
-              </button>
-              <button
-                class="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left font-medium text-slate-200 transition hover:bg-white/10"
-                data-quick-action="syarat-penilaian"
-              >
-                Syarat Penilaian & Rubrik UT
-                <span class="rounded-full bg-primary-500/20 px-2 py-0.5 text-xs text-primary-200">
-                  Lengkap
-                </span>
-              </button>
-            </div>
-            <div class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-slate-300">
-              <p>
-                <span class="font-semibold text-white">Catatan:</span> Pastikan endpoint backend Anda sesuai dengan opsi
-                <code class="rounded bg-slate-900/60 px-1">webhookUrl</code> pada inisialisasi <code class="rounded bg-slate-900/60 px-1">createChat</code> di bagian bawah halaman.
-              </p>
-            </div>
-          </aside>
-
-          <section class="glass-panel gradient-border flex min-h-[620px] flex-col overflow-hidden rounded-3xl bg-gradient-to-br from-primary-900/40 via-primary-800/40 to-slate-900/60">
+        <section id="layanan" class="glass-panel gradient-border flex min-h-[620px] flex-col overflow-hidden rounded-3xl bg-gradient-to-br from-primary-900/40 via-primary-800/40 to-slate-900/60">
             <header class="flex items-center justify-between border-b border-white/10 px-6 py-5">
               <div>
                 <p class="text-xs uppercase tracking-[0.3em] text-primary-200">Chatbot Mata Kuliah</p>
@@ -463,23 +411,24 @@
                   <p class="text-[11px] uppercase tracking-[0.35em] text-primary-200">Panduan Cepat</p>
                   <ul class="space-y-2">
                     <li class="rounded-xl bg-slate-900/50 p-3 text-slate-200">
-                      "Apa saja sesi tutorial webinar (Tuweb) yang wajib diikuti?"
+                      "Tolong bantu susun rumusan masalah yang sejalan dengan topik penelitian saya."
                     </li>
                     <li class="rounded-xl bg-slate-900/50 p-3 text-slate-200">
-                      "Apa saja isi bagian pendahuluan tutorial online (Tuton)?"
+                      "Apa metode pengumpulan data yang cocok untuk penelitian kualitatif saya?"
                     </li>
                     <li class="rounded-xl bg-slate-900/50 p-3 text-slate-200">
-                      "Bagaimana sistem penilaian pada mata kuliah ini?"
+                      "Bagaimana format penyajian hasil dan pembahasan menurut panduan UT?"
                     </li>
                   </ul>
-                  
+                  <div class="rounded-xl border border-primary-500/30 bg-primary-900/40 p-3 text-[11px] text-primary-100">
+                    <span class="font-semibold text-white">Tips:</span> Sertakan detail kelas, modul, dan batas waktu tugas agar rekomendasi lebih tepat sasaran.
+                  </div>
                 </div>
                 <div class="flex-1 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 shadow-inner shadow-primary-900/20">
                   <div id="n8n-chat" class="h-full w-full"></div>
                 </div>
               </div>
             </div>
-          </section>
         </section>
 
       </main>
@@ -508,7 +457,7 @@
         showWelcomeScreen: false,
         initialMessages: [
           'Halo! 👋 Selamat datang di Pusat Bimbingan Metodologi Penelitian UT.',
-          'Saya siap mendampingi penyusunan proposal, instrumen, hingga analisis data kamu.',
+          'Saya siap menjawab pertanyaan kamu terkait metodologi penelitian.',
         ],
         i18n: {
           id: {
