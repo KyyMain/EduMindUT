@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UT Metodologi Penelitian Chat Center</title>
+    <meta
+      name="description"
+      content="Chatbot resmi Universitas Terbuka untuk bimbingan Mata Kuliah Metodologi Penelitian."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+            },
+            colors: {
+              primary: {
+                50: '#eff6ff',
+                100: '#d6e4ff',
+                200: '#adc2ff',
+                300: '#7d9fff',
+                400: '#4779ff',
+                500: '#2253d1',
+                600: '#1842ab',
+                700: '#113185',
+                800: '#0b225e',
+                900: '#071843',
+              },
+              gold: {
+                50: '#fffbed',
+                100: '#feefc2',
+                200: '#fce190',
+                300: '#ffd15a',
+                400: '#fbb72b',
+                500: '#e79e10',
+                600: '#c78308',
+                700: '#9d640a',
+                800: '#794d0f',
+                900: '#5d3c12',
+              },
+              slate: {
+                950: '#0b1120',
+              },
+            },
+            boxShadow: {
+              glass: '0 20px 45px -25px rgba(15,23,42,0.35)',
+            },
+            backdropBlur: {
+              xs: '2px',
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          sans-serif;
+      }
+      .glass-panel {
+        background: rgba(15, 23, 42, 0.55);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        backdrop-filter: blur(18px);
+      }
+      .gradient-border {
+        position: relative;
+      }
+      .gradient-border::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(62, 116, 230, 0.8), rgba(243, 244, 255, 0));
+        mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+        pointer-events: none;
+      }
+
+      /* Styling overrides for the embedded chat widget */
+      .n8n-chat .chat-window {
+        background: radial-gradient(circle at top right, rgba(34, 83, 209, 0.25), transparent 55%),
+          rgba(7, 24, 67, 0.92);
+        border: 1px solid rgba(80, 115, 209, 0.35);
+        box-shadow: 0 32px 60px -40px rgba(8, 20, 49, 0.8);
+        border-radius: 28px;
+        overflow: hidden;
+      }
+
+      .n8n-chat .chat-layout {
+        background: transparent;
+        color: #e2e8f0;
+      }
+
+      .n8n-chat .chat-header {
+        background: linear-gradient(135deg, rgba(34, 83, 209, 0.25), rgba(7, 24, 67, 0.6));
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(79, 124, 229, 0.3);
+        padding: 24px;
+      }
+
+      .n8n-chat .chat-heading h1 {
+        font-size: 1rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #c7d7ff;
+      }
+
+      .n8n-chat .chat-heading + p {
+        font-size: 0.9rem;
+        color: #9fb5f5;
+        margin-top: 8px;
+      }
+
+      .n8n-chat .chat-messages {
+        background: linear-gradient(180deg, rgba(8, 20, 49, 0.85), rgba(7, 17, 38, 0.95));
+        padding: 28px 24px 16px;
+      }
+
+      .n8n-chat .chat-message {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 18px;
+        border-radius: 18px;
+        width: 100%;
+      }
+
+      .n8n-chat .chat-message:last-child {
+        margin-bottom: 0;
+      }
+
+      .n8n-chat .chat-message .chat-message-markdown {
+        padding: 14px 18px;
+        border-radius: 18px;
+        line-height: 1.6;
+        max-width: clamp(240px, 65%, 560px);
+        box-shadow: none;
+        border: 1px solid transparent;
+      }
+
+      .n8n-chat .chat-message .chat-message-markdown p {
+        margin-bottom: 0.5rem;
+      }
+
+      .n8n-chat .chat-message .chat-message-markdown p:last-child {
+        margin-bottom: 0;
+      }
+
+      .n8n-chat .chat-message-from-bot .chat-message-markdown {
+        margin-right: auto;
+        background: rgba(12, 31, 72, 0.92);
+        border-color: rgba(87, 130, 220, 0.35);
+        color: #dce7ff;
+        position: relative;
+      }
+
+      .n8n-chat .chat-message-from-user .chat-message-markdown {
+        margin-left: auto;
+        background: linear-gradient(135deg, #2253d1, #4779ff);
+        color: #ffffff;
+        box-shadow: 0 16px 32px -18px rgba(34, 83, 209, 0.85);
+      }
+
+      .n8n-chat .chat-message-from-user .chat-message-markdown a {
+        color: #fff4c8;
+      }
+
+      .n8n-chat .chat-message-from-bot .chat-message-markdown a {
+        color: #8cb4ff;
+      }
+
+      .n8n-chat .chat-footer {
+        background: rgba(6, 15, 35, 0.85);
+        border-top: 1px solid rgba(79, 124, 229, 0.25);
+        padding: 18px 24px 24px;
+      }
+
+      .n8n-chat .chat-input {
+        border-radius: 20px;
+        background: rgba(9, 20, 46, 0.85);
+        border: 1px solid rgba(85, 126, 216, 0.35);
+        padding: 14px 14px 14px 18px;
+        box-shadow: inset 0 0 0 1px rgba(19, 44, 98, 0.35);
+      }
+
+      .n8n-chat .chat-inputs {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: flex-end;
+        gap: 0.75rem;
+      }
+
+      .n8n-chat .chat-input textarea {
+        background: rgba(7, 20, 48, 0.95);
+        border: 1px solid rgba(87, 130, 220, 0.3);
+        border-radius: 16px;
+        color: #d1dcff;
+        font-size: 0.95rem;
+        line-height: 1.45;
+        padding: 12px 16px;
+        resize: none;
+        min-height: 64px;
+      }
+
+      .n8n-chat .chat-input textarea::placeholder {
+        color: rgba(176, 197, 255, 0.65);
+      }
+
+      .n8n-chat .chat-inputs-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .n8n-chat .chat-input-send-button {
+        background: linear-gradient(135deg, #ffd15a, #fbb72b);
+        border-radius: 16px;
+        border: none;
+        width: 48px;
+        height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 18px 30px -20px rgba(251, 183, 43, 0.9);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .n8n-chat .chat-input-send-button:disabled {
+        background: rgba(120, 132, 167, 0.4);
+        box-shadow: none;
+      }
+
+      .n8n-chat .chat-input-send-button:not(:disabled):hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 32px -18px rgba(251, 183, 43, 0.95);
+      }
+
+      .n8n-chat .chat-input-file-button {
+        background: rgba(10, 25, 59, 0.9);
+        border-radius: 16px;
+        border: 1px solid rgba(87, 130, 220, 0.4);
+        width: 48px;
+        height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #b4c6ff;
+        transition: border-color 0.2s ease, color 0.2s ease;
+      }
+
+      .n8n-chat .chat-input-file-button:hover {
+        border-color: rgba(136, 169, 255, 0.75);
+        color: #dce4ff;
+      }
+
+      .n8n-chat .chat-window-toggle {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="relative overflow-hidden">
+      <div class="absolute inset-0 -z-10">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(62,116,230,0.35),transparent_55%)]"></div>
+        <div class="absolute -left-32 top-1/3 h-72 w-72 rounded-full bg-[rgba(62,116,230,0.2)] blur-3xl"></div>
+        <div class="absolute -right-20 bottom-10 h-96 w-96 rounded-full bg-[rgba(88,179,246,0.18)] blur-3xl"></div>
+      </div>
+
+      <nav class="relative mx-auto flex max-w-6xl items-center justify-between px-6 py-8">
+        <div class="flex items-center gap-4">
+          <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 p-2 shadow-lg shadow-primary-900/40">
+            <img
+              src="asset/logo.jpg"
+              alt="Logo Universitas Terbuka"
+              class="h-full w-full object-contain"
+            />
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-[0.45em] text-primary-200">Universitas Terbuka</p>
+            <p class="text-lg font-semibold text-white">Pusat Layanan Digital</p>
+          </div>
+        </div>
+        <div class="hidden items-center gap-6 text-sm text-slate-300 md:flex">
+          <a href="#chatbot" class="transition hover:text-white">Layanan Chat</a>
+          <a href="#layanan" class="transition hover:text-white">Fitur Asisten</a>
+          <a
+            href="#chatbot"
+            class="inline-flex items-center gap-2 rounded-full bg-gold-400 px-5 py-2 font-semibold text-slate-950 shadow-lg shadow-gold-500/30 transition hover:bg-gold-300"
+          >
+            Mulai Chat Sekarang
+          </a>
+        </div>
+      </nav>
+
+      <header class="relative mx-auto flex max-w-6xl flex-col gap-10 px-6 pb-20 pt-6 lg:flex-row lg:items-center lg:gap-20">
+        <div class="flex-1 space-y-7">
+          <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-primary-800/40 px-4 py-1 text-sm font-medium text-primary-100">
+            <span class="inline-flex h-2 w-2 animate-pulse rounded-full bg-gold-400"></span>
+            Metodologi Penelitian • Universitas Terbuka
+          </span>
+          <h1 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Chat Center UT untuk bimbingan Mata Kuliah Metodologi Penelitian.
+          </h1>
+          <p class="max-w-xl text-lg text-slate-300">
+            Dapatkan panduan penyusunan proposal, referensi metodologi, serta pengecekan progres tugas
+            akhir. Dirancang khusus untuk mahasiswa UT yang mengambil mata kuliah Metodologi Penelitian.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a
+              href="#chatbot"
+              class="inline-flex items-center gap-2 rounded-full bg-primary-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary-900/40 transition hover:bg-primary-400"
+            >
+              Buka Asisten Virtual
+              <span class="text-xs font-medium uppercase tracking-[0.3em] text-gold-200">Live</span>
+            </a>
+            <a
+              href="https://www.ut.ac.id/"
+              class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Portal UT
+            </a>
+          </div>
+          <div class="grid gap-4 text-sm text-slate-300 sm:grid-cols-2">
+            <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4">
+              <p class="text-xs uppercase tracking-[0.4em] text-primary-200">Panduan</p>
+              <p class="mt-1 font-semibold text-white">Langkah Penelitian Terstruktur</p>
+              <p class="mt-2 text-slate-400">Ringkas tahapan riset mulai dari perumusan masalah, metode, hingga penyusunan laporan.</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/5 px-5 py-4">
+              <p class="text-xs uppercase tracking-[0.4em] text-primary-200">Sumber</p>
+              <p class="mt-1 font-semibold text-white">Referensi & Template UT</p>
+              <p class="mt-2 text-slate-400">Akses cepat ke format proposal, rubrik penilaian, dan contoh instrumen penelitian resmi UT.</p>
+            </div>
+          </div>
+        </div>
+        <div class="relative flex-1">
+          <div class="glass-panel gradient-border relative overflow-hidden rounded-3xl p-8 shadow-glass">
+            <div class="flex items-center justify-between text-sm text-slate-300">
+              <div class="flex items-center gap-2">
+                <span class="flex h-2 w-2 rounded-full bg-emerald-400"></span>
+                Status: Aktif & Terverifikasi
+              </div>
+              <span class="inline-flex items-center gap-2 rounded-full bg-primary-500/20 px-3 py-1 text-xs text-primary-100">
+                <span class="h-2 w-2 rounded-full bg-gold-400"></span>
+                Layanan Resmi UT
+              </span>
+            </div>
+            <div class="mt-8 space-y-5">
+              <div class="flex items-start gap-3">
+                <span class="mt-1 flex h-10 w-10 items-center justify-center rounded-2xl bg-primary-500/20 text-lg">🎓</span>
+                <div>
+                  <div class="rounded-2xl bg-white/5 p-4 text-sm text-slate-200">
+                    Selamat datang di Pusat Bimbingan Metodologi Penelitian UT. Sebutkan modul, tugas, atau kendala penelitianmu ya.
+                  </div>
+                  <span class="mt-2 block text-xs text-slate-500">08:02 • Sistem</span>
+                </div>
+              </div>
+              <div class="flex items-start justify-end gap-3">
+                <div>
+                  <div class="rounded-2xl bg-primary-500/90 p-4 text-sm text-white shadow-lg shadow-primary-900/40">
+                    Kak, saya ingin memastikan kerangka pikir penelitian kuantitatif saya sudah sesuai belum ya?
+                  </div>
+                  <span class="mt-2 block text-right text-xs text-slate-500">08:05 • Mahasiswa</span>
+                </div>
+                <span class="mt-1 flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 text-lg">🧑‍🎓</span>
+              </div>
+              <div class="flex flex-wrap gap-3 text-xs text-slate-400">
+                <span class="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                  <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                  Modul & Silabus MPDR4201
+                </span>
+                <span class="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                  📚 Contoh Proposal & Rubrik Penilaian
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="absolute -left-12 -bottom-12 hidden h-32 w-32 rounded-3xl border border-white/10 bg-white/5 lg:block"></div>
+          <div class="absolute -right-10 -top-10 hidden h-24 w-24 rounded-full border border-white/10 bg-primary-500/10 lg:block"></div>
+        </div>
+      </header>
+
+      <main id="chatbot" class="relative mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 pb-20">
+        <section id="layanan" class="grid gap-6 lg:grid-cols-[320px_1fr]">
+          <aside class="glass-panel gradient-border h-max rounded-3xl p-6 text-sm">
+            <h2 class="text-lg font-semibold text-white">Pendampingan Metodologi</h2>
+            <p class="mt-2 text-slate-400">
+              Pilih aksi cepat untuk mendapatkan panduan instan seputar tugas dan asesmen Metodologi Penelitian.
+            </p>
+            <div class="mt-5 space-y-3 text-sm">
+              <button
+                class="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left font-medium text-slate-200 transition hover:bg-white/10"
+                data-quick-action="rangkuman-materi"
+              >
+                Rangkuman Materi Minggu Ini
+                <span class="rounded-full bg-primary-500/20 px-2 py-0.5 text-xs text-primary-200">
+                  5 menit
+                </span>
+              </button>
+              <button
+                class="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left font-medium text-slate-200 transition hover:bg-white/10"
+                data-quick-action="cek-topik-penelitian"
+              >
+                Validasi Topik Penelitian
+                <span class="rounded-full bg-primary-500/20 px-2 py-0.5 text-xs text-primary-200">
+                  Relevansi
+                </span>
+              </button>
+              <button
+                class="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left font-medium text-slate-200 transition hover:bg-white/10"
+                data-quick-action="contoh-instrumen"
+              >
+                Contoh Instrumen Pengumpulan Data
+                <span class="rounded-full bg-gold-400/20 px-2 py-0.5 text-xs text-gold-200">
+                  Template
+                </span>
+              </button>
+              <button
+                class="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left font-medium text-slate-200 transition hover:bg-white/10"
+                data-quick-action="syarat-penilaian"
+              >
+                Syarat Penilaian & Rubrik UT
+                <span class="rounded-full bg-primary-500/20 px-2 py-0.5 text-xs text-primary-200">
+                  Lengkap
+                </span>
+              </button>
+            </div>
+            <div class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-slate-300">
+              <p>
+                <span class="font-semibold text-white">Catatan:</span> Pastikan endpoint backend Anda sesuai dengan opsi
+                <code class="rounded bg-slate-900/60 px-1">webhookUrl</code> pada inisialisasi <code class="rounded bg-slate-900/60 px-1">createChat</code> di bagian bawah halaman.
+              </p>
+            </div>
+          </aside>
+
+          <section class="glass-panel gradient-border flex min-h-[620px] flex-col overflow-hidden rounded-3xl bg-gradient-to-br from-primary-900/40 via-primary-800/40 to-slate-900/60">
+            <header class="flex items-center justify-between border-b border-white/10 px-6 py-5">
+              <div>
+                <p class="text-xs uppercase tracking-[0.3em] text-primary-200">Chatbot Mata Kuliah</p>
+                <h2 class="text-lg font-semibold text-white">Asisten Metodologi Penelitian UT</h2>
+              </div>
+              <span class="flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-300">
+                <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
+                Tersinkron dengan sistem UT
+              </span>
+            </header>
+            <div class="flex flex-1 flex-col">
+              <div class="flex flex-1 flex-col gap-6 px-6 py-6 md:flex-row">
+                <div class="hidden w-64 shrink-0 flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-slate-300 md:flex">
+                  <p class="text-[11px] uppercase tracking-[0.35em] text-primary-200">Panduan Cepat</p>
+                  <ul class="space-y-2">
+                    <li class="rounded-xl bg-slate-900/50 p-3 text-slate-200">
+                      "Apa saja sesi tutorial webinar (Tuweb) yang wajib diikuti?"
+                    </li>
+                    <li class="rounded-xl bg-slate-900/50 p-3 text-slate-200">
+                      "Apa saja isi bagian pendahuluan tutorial online (Tuton)?"
+                    </li>
+                    <li class="rounded-xl bg-slate-900/50 p-3 text-slate-200">
+                      "Bagaimana sistem penilaian pada mata kuliah ini?"
+                    </li>
+                  </ul>
+                  
+                </div>
+                <div class="flex-1 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 shadow-inner shadow-primary-900/20">
+                  <div id="n8n-chat" class="h-full w-full"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+      </main>
+
+      <footer class="border-t border-white/10 bg-slate-950/90">
+        <div class="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-lg font-semibold text-white">Universitas Terbuka Digital Service Center</p>
+            <p class="text-sm text-slate-400">Memberikan layanan akademik dan administrasi cepat untuk mahasiswa di seluruh Indonesia.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-4 text-sm text-slate-400">
+            <a href="#chatbot" class="transition hover:text-white">Chat Resmi</a>
+            <a href="https://www.ut.ac.id/" class="transition hover:text-white" target="_blank" rel="noreferrer">Portal UT</a>
+            <a href="https://hallo-ut.ut.ac.id/" class="transition hover:text-white">Kontak Layanan</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script type="module">
+      import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+      createChat({
+        target: '#n8n-chat',
+        mode: 'window',
+        webhookUrl: 'https://kyymain.app.n8n.cloud/webhook/35217341-ff42-4b06-b785-06783fbd31d5/chat',
+        showWelcomeScreen: false,
+        initialMessages: [
+          'Halo! 👋 Selamat datang di Pusat Bimbingan Metodologi Penelitian UT.',
+          'Saya siap mendampingi penyusunan proposal, instrumen, hingga analisis data kamu.',
+        ],
+        i18n: {
+          id: {
+            title: 'Bimbingan Metodologi Penelitian',
+            subtitle: 'Fokus membantu tugas, kuis, dan riset untuk mata kuliah Metodologi Penelitian Universitas Terbuka.',
+            getStarted: 'Mulai Bimbingan',
+            inputPlaceholder: 'Tuliskan pertanyaan Metodologi Penelitian kamu di sini...',
+          },
+        },
+        defaultLanguage: 'id',
+        metadata: {
+          source: 'ut-metodologi-penelitian-chat-center',
+          institution: 'Universitas Terbuka',
+        },
+      });
+
+      const autoOpenWindow = () => {
+        const chatWindow = document.querySelector('.chat-window');
+        const toggleButton = document.querySelector('.chat-window-toggle');
+        if (!chatWindow || !toggleButton) return false;
+        const isHidden = chatWindow.hasAttribute('hidden') || getComputedStyle(chatWindow).display === 'none';
+        if (isHidden) {
+          toggleButton.click();
+        }
+        return !isHidden;
+      };
+
+      const openInterval = setInterval(() => {
+        if (autoOpenWindow()) {
+          clearInterval(openInterval);
+        }
+      }, 200);
+
+      setTimeout(() => {
+        clearInterval(openInterval);
+      }, 5000);
+    </script>
+  </body>
+</html>
